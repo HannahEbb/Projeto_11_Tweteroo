@@ -30,7 +30,7 @@ server.post('/sign-up', (req, res) => {
 
 
   function getLastTen (tweets) { //lógica para pegar os últimos 10 tweets da array 'tweets'
-    const lastTen = [];
+    let lastTen = [];
     if(tweets.length <= 10) {
         lastTen = tweets;
     } else {
