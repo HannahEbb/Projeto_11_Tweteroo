@@ -9,27 +9,40 @@ const users = [];
 const tweets = [];
 
 server.post('/sign-up', (req, res) => {
+    const username = req.users;
+    const avatar = req.avatar;
     users.push({
-        username: "bobesponja",
-        avatar: "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info"
+        username: {username},
+        avatar: {avatar}
     });
     res.send("OK");
   });
 
   server.post('/tweets', (req, res) => {
+    const username = req.username;
+    const tweet = req.tweet;
     tweets.push({
-        username: "bobesponja",
-        tweet: "eu amo o hub"
+        username: {username},
+        tweet: {tweet}
     });
     res.send("OK");
   });
 
-  const lastTen = [];
 
-  //lógica para pegar os últimos 10 tweets da array 'tweets'
+  function getLastTen (tweets) { //lógica para pegar os últimos 10 tweets da array 'tweets'
+    const lastTen = [];
+    if(tweets.length <= 10) {
+        lastTen = tweets;
+    } else {
+        for(let i = tweets.length; i > tweets.length - (10-1); i--) {
+            push.lastTen(tweets[i]);
+        }
+    }
+    return lastTen;
+  }
 
   server.get('/tweets', (req, res) => {
-    res.send(lastTen);
+    res.send(getLastTen(tweets));
   });
 
 
