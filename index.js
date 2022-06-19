@@ -8,41 +8,64 @@ server.use(express.json());
 const users = [];
 const tweets = [];
 
+
 server.post('/sign-up', (req, res) => {
-    const username = req.users;
-    const avatar = req.avatar;
-    users.push({
-        username: {username},
-        avatar: {avatar}
-    });
+    const userData = req.body;
+    users.push(userData);
     res.send("OK");
   });
 
   server.post('/tweets', (req, res) => {
-    const username = req.username;
-    const tweet = req.tweet;
-    tweets.push({
-        username: {username},
-        tweet: {tweet}
-    });
+    const tweetData = req.body;
+    tweets.push(tweetData);
     res.send("OK");
   });
 
 
-  function getLastTen (tweets) { //lógica para pegar os últimos 10 tweets da array 'tweets'
-    let lastTen = [];
-    if(tweets.length <= 10) {
-        lastTen = tweets;
-    } else {
-        for(let i = tweets.length; i > tweets.length - (10-1); i--) {
-            push.lastTen(tweets[i]);
+  function getLastTen (tweets, users) { //lógica para pegar os últimos 10 tweets da array 'tweets' com o 'avatar' do array 'users'!
+    const tweetsDiplay = [];
+
+
+    if(tweets.length <=10) {
+      for(let i = tweets.length-1; i >= 0; i--){
+        for(let j = 0; j < users.length; j++) {
+          if(tweets[i].username === users[j].username) {
+            const username = tweets[i].username;
+            const avatar = users[j].avatar;
+            const tweet = tweets[i].tweet;
+            tweetsDiplay.push(
+              {
+                username: username,
+                avatar: avatar,
+                tweet: tweet
+              }
+            );
+          }
         }
+      }
+    } else {
+      for(let i = tweets.length -1; i > tweets.length -11; i--){
+        for(let j = 0; j < users.length; j++) {
+          if(tweets[i].username === users[j].username) {
+            const username = tweets[i].username;
+            const avatar = users[j].avatar;
+            const tweet = tweets[i].tweet;
+            tweetsDiplay.push(
+              {
+                username: username,
+                avatar: avatar,
+                tweet: tweet
+              }
+            );
+          }
+        }
+      }
     }
-    return lastTen;
+    return tweetsDiplay;
   }
 
   server.get('/tweets', (req, res) => {
-    res.send(getLastTen(tweets));
+    res.send(getLastTen(tweets, users));
   });
 
 
